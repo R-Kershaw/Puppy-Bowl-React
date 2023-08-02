@@ -15,8 +15,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<h1>Home</h1>} />
         <Route path="/players" element={<AllPlayers APIURL={APIURL} />} />
-        <Route path="/players/:id" element={<SinglePlayer APIURL={APIURL}/>} />
-        <Route path="/newPlayer" element={<NewPlayerForm />} />
+        <Route path="/players/:id" element={<SinglePlayer APIURL={APIURL} />} />
+        <Route path="/newPlayer" element={<NewPlayerForm APIURL={APIURL} />} />
       </Routes>
     </>
   )

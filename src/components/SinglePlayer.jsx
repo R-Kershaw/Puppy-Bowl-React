@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 export default function SinglePlayer({ APIURL }) {
     const { id } = useParams();
-    const [player, setPlayer] = useState([]);
+    const [player, setPlayer] = useState(null);
 
     useEffect(() => {
         async function fetchSinglePlayer() {
