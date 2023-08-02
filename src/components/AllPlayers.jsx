@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const cohortName = '2302-ACC-PT-WEB-PT-A';
-const APIURL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/`;
-
-export default function AllPlayers() {
+export default function AllPlayers({ APIURL }) {
 
     const [players, setPlayers] = useState([]);
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchAllPlayers() {
@@ -29,8 +27,11 @@ export default function AllPlayers() {
                 {
                     players.map((player) => {
                         return (
-                            <div key={player.id}>
+                            <div className="PuppyCard" key={player.id}>
                                 <p>{player.name}</p>
+                                <button
+                                    onClick={() => navigate(`/players/${player.id}`)}>Details
+                                </button>
                             </div>
                         )
                     })
