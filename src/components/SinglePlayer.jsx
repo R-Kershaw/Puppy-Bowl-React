@@ -6,6 +6,18 @@ export default function SinglePlayer({ APIURL }) {
     const { id } = useParams();
     const [player, setPlayer] = useState(null);
 
+    async function handleClick() {
+        try {
+            const response = await fetch(`${APIURL}players/${id}/`,
+                {
+                    method: 'DELETE'
+                });
+            const result = await response.json();
+        } catch (error) {
+
+        }
+    }
+
     useEffect(() => {
         async function fetchSinglePlayer() {
             try {
@@ -32,6 +44,7 @@ export default function SinglePlayer({ APIURL }) {
                 <p><strong>Updated at:</strong> {player.updatedAt}</p>
                 <p><strong>Team ID:</strong> {player.teamId}</p>
                 <p><strong>Cohort ID:</strong> {player.cohortId}</p>
+                <button onClick={handleClick}>Remove Player</button>
                 {console.log(id)}
             </div>
         )
