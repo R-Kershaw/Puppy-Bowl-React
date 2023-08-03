@@ -6,6 +6,7 @@ export default function AllPlayers({ APIURL }) {
 
     const [players, setPlayers] = useState([]);
     const navigate = useNavigate();
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
         async function fetchAllPlayers() {
@@ -24,17 +25,27 @@ export default function AllPlayers({ APIURL }) {
     if (players) {
         return (
             <div>
+                <input type="text"
+                    placeholder="Search Players"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
                 {
-                    players.map((player) => {
-                        return (
-                            <div className="PuppyCard" key={player.id}>
-                                <p>{player.name}</p>
-                                <button
-                                    onClick={() => navigate(`/players/${player.id}`)}>Details
-                                </button>
-                            </div>
-                        )
+                    players.filter((player) => {
+                        return search.toLowerCase() === ''
+                            ? player
+                            : player.name.toLowerCase().includes(search);
                     })
+                        .map((player) => {
+                            return (
+                                <div className="PuppyCard" key={player.id}>
+                                    <p>{player.name}</p>
+                                    <button
+                                        onClick={() => navigate(`/players/${player.id}`)}>Details
+                                    </button>
+                                </div>
+                            )
+                        })
                 }
             </div>
         )
