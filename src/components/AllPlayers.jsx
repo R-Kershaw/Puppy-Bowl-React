@@ -25,7 +25,7 @@ export default function AllPlayers({ APIURL }) {
     if (players) {
         return (
             <div>
-                <input type="text"
+                <input type="search"
                     placeholder="Search Players"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}

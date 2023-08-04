@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function NewPlayerForm({ APIURL }) {
     const [name, setName] = useState("");
@@ -6,7 +7,8 @@ export default function NewPlayerForm({ APIURL }) {
     const [status, setStatus] = useState("");
     const [imageUrl, setImgUrl] = useState("");
     const [teamId, setTeamId] = useState("");
-
+    const navigate = useNavigate();
+    
     async function handleSubmit(event) {
         event.preventDefault();
         
@@ -81,7 +83,7 @@ export default function NewPlayerForm({ APIURL }) {
                 />
             </label>
 
-            <button type='submit'>Submit</button>
+            <button type='submit' onClick={() => navigate(-1)}>Submit</button>
         </form>
     )
 }

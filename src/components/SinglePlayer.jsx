@@ -1,8 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 
 export default function SinglePlayer({ APIURL }) {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [player, setPlayer] = useState(null);
 
@@ -13,6 +14,7 @@ export default function SinglePlayer({ APIURL }) {
                     method: 'DELETE'
                 });
             const result = await response.json();
+            navigate(-1);
         } catch (error) {
 
         }
