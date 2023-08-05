@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { addNewPlayer } from './fetchPlayers'; // Import the function to add a new player
-
-const NewPlayerForm = () => {
+function NewPlayerForm() {
   const [formData, setFormData] = useState({
     name: '',
     breed: '',
@@ -22,6 +20,7 @@ const NewPlayerForm = () => {
     event.preventDefault();
     try {
       await addNewPlayer(formData); // Call the function to add the new player
+
       // You can do additional actions, like clearing the form or showing a success message
       console.log('New player added successfully!');
     } catch (error) {
@@ -53,6 +52,6 @@ const NewPlayerForm = () => {
       <input type="submit" value="Add new Player" />
     </form>
   );
-};
+}
 
 export default NewPlayerForm;

@@ -1,14 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import AllPlayers from './components/AllPlayers.jsx';
+import SinglePlayer from './components/SinglePlayer.jsx';
+import NewPlayerForm from "./components/NewPlayerForm";
+import Navbar from './components/Navbar';
+import { Route, Routes } from 'react-router-dom';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  // return (
-  
-  // )
+export default function App() {
+  const cohortName = '2302-ACC-PT-WEB-PT-A';
+  const APIURL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/`;
+  return (
+    <>
+     <Navbar/>
+      <Routes>
+        <Route path="/home" element={<h1>Home</h1>} />
+        <Route path="/players" element={<AllPlayers APIURL={APIURL} />} />
+        <Route path="/players/:id" element={<SinglePlayer APIURL={APIURL} />} />
+        <Route path="/newPlayer" element={<NewPlayerForm APIURL={APIURL} />} />
+      </Routes>
+    </>
+  )
 }
-
-export default App

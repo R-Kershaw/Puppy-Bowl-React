@@ -1,5 +1,4 @@
-import React from 'react';
-import { fetchSinglePlayer } from './fetchPlayers.js'; // Import the fetchSinglePlayer function
+import React from "react";
 
 // Getting the player container and new player form container elements from the DOM
 const playerContainer = document.getElementById("all-players-container");
@@ -50,3 +49,14 @@ const renderSinglePlayerById = async (id) => {
 };
 
 export default renderSinglePlayerById;
+
+
+//  // Function to fetch a single player's details by playerId
+//  const handleFetchSinglePlayer = async (playerId) => {
+//   try {
+//     const player = await fetchSinglePlayer(playerId);
+//     console.log(player); // Log the fetched player details
+//   } catch (error) {
+//     console.error(`Oh no, trouble fetching player #${playerId}!`, error);
+//   }
+// };
