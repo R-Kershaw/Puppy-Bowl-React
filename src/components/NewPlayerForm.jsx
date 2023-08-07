@@ -34,6 +34,7 @@ export default function NewPlayerForm({ APIURL }) {
         });
       const result = await response.json();
       console.log(result);
+      navigate(-1);
       return result;
     } catch (error) {
       console.log(error);
@@ -88,7 +89,7 @@ export default function NewPlayerForm({ APIURL }) {
       </label>
       <br /><br />
 
-      <button type='submit' onClick={() => navigate(-1)}>Submit</button>
+      <button type='submit'>Submit</button>
     </form>
   )
 }
