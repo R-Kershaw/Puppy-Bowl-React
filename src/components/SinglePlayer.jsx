@@ -1,62 +1,56 @@
-import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
 
-// Getting the player container and new player form container elements from the DOM
-const playerContainer = document.getElementById("all-players-container");
-const newPlayerFormContainer = document.getElementById("new-player-form");
+export default function SinglePlayer({ APIURL }) {
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const [player, setPlayer] = useState(null);
 
-// Function to toggle player visibility
-const togglePlayerListVisibility = (displayVal) => {
-  const playerElements = document.getElementsByClassName("player");
-  for (const playerElement of playerElements) {
-    playerElement.style.display = displayVal;
-  }
-  newPlayerFormContainer.style.display = displayVal;
-};
+    async function handleClick() {
+        try {
+            const response = await fetch(`${APIURL}players/${id}/`,
+                {
+                    method: 'DELETE'
+                });
+            const result = await response.json();
+            navigate(-1);
+        } catch (error) {
 
-// Function to render details of a single player by playerId
-const renderSinglePlayerById = async (id) => {
-  try {
-    // Fetch player details from the server using the fetchSinglePlayer function
-    const player = await fetchSinglePlayer(id);
+        }
+    }
 
-    // Create a new HTML element to display player details
-    const playerDetailsElememt = document.createElement("div");
-    playerDetailsElememt.classList.add("player-details");
-    playerDetailsElememt.innerHTML = `
-      <h2>${player.name}</h2>
-      <p><img src="${player.imageUrl}"></p>
-      <p>ID: ${player.id}</p>
-      <p>Breed: ${player.breed}</p>
-      <p>Status: ${player.status}</p>
-      <p>Created at: ${player.createdAt}</p>
-      <p>Updated at: ${player.updatedAt}</p>
-      <p>Team ID: ${player.teamId}</p>
-      <p>Cohort ID: ${player.cohortId}</p>
-      <button class="close-button">Close</button>
-    `;
+    useEffect(() => {
+        async function fetchSinglePlayer() {
+            try {
+                const response = await fetch(`${APIURL}players/${id}`);
+                const result = await response.json();
+                setPlayer(result.data.player);
+                console.log(player);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchSinglePlayer();
+    }, [])
 
-    playerContainer.appendChild(playerDetailsElememt);
-
-    // Add event listener to close button
-    const closeButton = playerDetailsElememt.querySelector(".close-button");
-    closeButton.addEventListener("click", () => {
-      playerDetailsElememt.remove();
-      togglePlayerListVisibility("flex");
-    });
-  } catch (error) {
-    console.error(`Uh oh, trouble rendering player #${id}!`, error);
-  }
-};
-
-export default renderSinglePlayerById;
-
-
-//  // Function to fetch a single player's details by playerId
-//  const handleFetchSinglePlayer = async (playerId) => {
-//   try {
-//     const player = await fetchSinglePlayer(playerId);
-//     console.log(player); // Log the fetched player details
-//   } catch (error) {
-//     console.error(`Oh no, trouble fetching player #${playerId}!`, error);
-//   }
-// };
+    if (player) {
+        return (
+            <div>
+                <h1>{player.name}</h1>
+                <p><img alt="image of a puppy" src={`${player.imageUrl}`} /></p>
+                <p><strong>ID:</strong> {player.id}</p>
+                <p><strong>Breed:</strong> {player.breed}</p>
+                <p><strong>Status:</strong> {player.status}</p>
+                <p><strong>Created at:</strong> {player.createdAt}</p>
+                <p><strong>Updated at:</strong> {player.updatedAt}</p>
+                <p><strong>Team ID:</strong> {player.teamId}</p>
+                <p><strong>Cohort ID:</strong> {player.cohortId}</p>
+                <button onClick={handleClick}>Remove Player</button>
+                {console.log(id)}
+            </div>
+        )
+    } else {
+        return null;
+    }
+}

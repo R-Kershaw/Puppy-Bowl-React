@@ -10,10 +10,9 @@ export default function App() {
   const APIURL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/`;
   return (
     <>
-      <h1>Welcome to the Puppy Bowl!</h1>
-     <Navbar/>
+      <NavBar />
       <Routes>
-        <Route path="/home" element={<h1>Home</h1>} />
+        <Route path="/" element={<h1>Home</h1>} />
         <Route path="/players" element={<AllPlayers APIURL={APIURL} />} />
         <Route path="/players/:id" element={<SinglePlayer APIURL={APIURL} />} />
         <Route path="/newPlayer" element={<NewPlayerForm APIURL={APIURL} />} />

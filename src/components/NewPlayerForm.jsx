@@ -1,57 +1,89 @@
-import React, { useState } from 'react';
-function NewPlayerForm() {
-  const [formData, setFormData] = useState({
-    name: '',
-    breed: '',
-    status: 'bench',
-    imageUrl: '',
-    teamId: '',
-  });
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+export default function NewPlayerForm({ APIURL }) {
+    const [name, setName] = useState("");
+    const [breed, setBreed] = useState("");
+    const [status, setStatus] = useState("");
+    const [imageUrl, setImgUrl] = useState("");
+    const [teamId, setTeamId] = useState("");
+    const navigate = useNavigate();
+    
+    async function handleSubmit(event) {
+        event.preventDefault();
+        
+        const newPlayer = { name, breed, status, imageUrl, teamId };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      await addNewPlayer(formData); // Call the function to add the new player
+        //don't pass in unacceptable/empty values for optional inputs or the post will fail
+        if ((status !=='bench') || (status !== 'field'))
+            delete newPlayer.status;
+        if (imageUrl === '')
+            delete newPlayer.imageUrl;
+        if (teamId === '')
+            delete newPlayer.teamId;
 
-      // You can do additional actions, like clearing the form or showing a success message
-      console.log('New player added successfully!');
-    } catch (error) {
-      console.error('Oops, something went wrong with adding the player!', error);
+        console.log(newPlayer);
+        try {
+            const response = await fetch(`${APIURL}players/`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newPlayer)
+                });
+            const result = await response.json();
+            console.log(result);
+            return result;
+        } catch (error) {
+            console.log(error);
+        }
     }
-  };
+    return (
+        <form onSubmit={handleSubmit}>
+            <label>
+                Name:
+                <input type="text"
+                    placeholder="required"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
+            </label>
+            <label>
+                Breed:
+                <input type="text"
+                    placeholder="required"
+                    value={breed}
+                    onChange={(e) => setBreed(e.target.value)}
+                    required
+                />
+            </label>
+            <label>
+                Status:
+                <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                    <option value="bench">bench</option>
+                    <option value="field">field</option>
+                </select>
+            </label>
+            <label>
+                ImageUrl:
+                <input type="url"
+                    placeholder="optional"
+                    value={imageUrl}
+                    onChange={(e) => setImgUrl(e.target.value)}
+                />
+            </label>
+            <label>
+                TeamId:
+                <input type="number"
+                    placeholder="optional"
+                    value={teamId}
+                    onChange={(e) => setTeamId(e.target.value)}
+                />
+            </label>
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <h3>Add Your Goodest Pupper to the Roster!!</h3>
-      <label>Name: </label>
-      <input type="text" name="name" value={formData.name} onChange={handleInputChange} required />
-      <br /><br />
-      <label>Breed: </label>
-      <input type="text" name="breed" value={formData.breed} onChange={handleInputChange} required />
-      <br /><br />
-      <label>Status: </label>
-      <select name="status" value={formData.status} onChange={handleInputChange}>
-        <option value="bench">Bench</option>
-        <option value="field">Field</option>
-      </select>
-      <br /><br />
-      <label>ImageUrl: </label>
-      <input type="url" name="imageUrl" value={formData.imageUrl} onChange={handleInputChange} required />
-      <br /><br />
-      <label>TeamId: </label>
-      <input type="number" name="teamId" value={formData.teamId} onChange={handleInputChange} required />
-      <br /><br />
-      <input type="submit" value="Add new Player" />
-    </form>
-  );
+            <button type='submit' onClick={() => navigate(-1)}>Submit</button>
+        </form>
+    )
 }
-
-export default NewPlayerForm;
