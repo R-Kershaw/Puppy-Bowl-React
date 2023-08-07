@@ -10,6 +10,7 @@ export default function App() {
   const APIURL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/`;
   return (
     <>
+      <h1>Welcome to the Puppy Bowl!</h1>
      <Navbar/>
       <Routes>
         <Route path="/home" element={<h1>Home</h1>} />
